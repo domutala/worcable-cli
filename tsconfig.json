@@ -1,24 +1,17 @@
 {
   // Visit https://aka.ms/tsconfig to read more about this file
   "compilerOptions": {
-    "types": [
-      "node"
-    ],
-    "moduleResolution": "node",
-    "lib": [
-      "ES2022"
-    ],
     "target": "ES2022",
     "module": "ESNext",
-    // "moduleResolution": "node",
-    // "ignoreDeprecations": "6.0",
+    "moduleResolution": "Node",
+    "ignoreDeprecations": "6.0",
     "outDir": "dist",
     "rootDir": "src",
     "strict": true,
     "esModuleInterop": true,
-    "skipLibCheck": true,
+    "skipLibCheck": true
   },
   "include": [
     "src"
-  ],
+  ]
 }
