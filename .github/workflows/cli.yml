@@ -51,10 +51,6 @@ jobs:
 
       - uses: oven-sh/setup-bun@v1
 
-      - name: Make binaries executable
-        run: |
-          chmod +x worcable-*
-
       - name: Build CLI
         run: |
           bun build src/index.ts --compile --target=bun-linux-x64 --outfile cli/worcable-linux-amd64
