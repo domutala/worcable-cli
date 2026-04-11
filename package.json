@@ -1,0 +1,36 @@
+{
+  "name": "@worcable/cli",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "bin": {
+    "worcable": "dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx src/index.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.32.1",
+  "dependencies": {
+    "@inquirer/prompts": "^8.4.1",
+    "cac": "^7.0.0",
+    "chalk": "^5.6.2",
+    "docker-compose": "^1.4.2",
+    "dockerode": "^4.0.10",
+    "execa": "^7.2.0",
+    "ora": "^9.3.0",
+    "picocolors": "^1.1.1",
+    "yocto-spinner": "^1.1.0",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@types/dockerode": "^4.0.1",
+    "@types/node": "^25.6.0",
+    "pkg": "^5.8.1",
+    "tsx": "^4.21.0",
+    "typescript": "^6.0.2"
+  }
+}
