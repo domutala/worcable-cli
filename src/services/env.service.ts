@@ -1,5 +1,5 @@
-import { readFileSync, existsSync, mkdirSync, writeFileSync } from "fs";
-import { dirname, join } from "path";
+import { readFileSync, existsSync, mkdirSync, writeFileSync } from "node:fs";
+import { dirname, join } from "node:path";
 import * as z from "zod";
 
 /**

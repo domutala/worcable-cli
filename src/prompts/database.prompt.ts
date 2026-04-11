@@ -5,7 +5,7 @@ import * as z from "zod";
 import { join } from "node:path";
 import { existsSync, mkdirSync } from "node:fs";
 import { loadEnv, saveEnv, validateEnv } from "../services/env.service";
-import { randomBytes } from "crypto";
+import { randomBytes } from "node:crypto";
 
 const databaseEnvSchema = z.object({
   PORT: z.string().transform(Number).pipe(z.number().positive()).optional(),
