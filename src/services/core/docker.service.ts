@@ -35,16 +35,6 @@ export async function runDocker(config: Config) {
       `traefik.http.services.worcable-${containerName}.loadbalancer.server.port=80`,
       `traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https`,
       `traefik.http.routers.worcable-${containerName}.middlewares=redirect-to-https`
-
-      // "traefik.enable=true",
-      // `traefik.http.routers.worcable-${containerName}.rule=Host('${domain}')`,
-      // `traefik.http.routers.worcable-${containerName}.entrypoints=web,websecure`,
-      // `traefik.http.routers.worcable-${containerName}.tls.certresolver=myresolver`,
-      // `traefik.http.services.worcable-${containerName}.loadbalancer.server.port=${80}`,
-      // `traefik.http.routers.worcable-${containerName}-http.rule=Host('${domain}')`,
-      // `traefik.http.routers.worcable-${containerName}-http.entrypoints=web`,
-      // `traefik.http.routers.worcable-${containerName}-http.middlewares=redirect-to-http`,
-      // `traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https`
     );
   }
 
