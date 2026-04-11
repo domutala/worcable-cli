@@ -3,12 +3,11 @@
   "version": "0.28.0",
   "description": "",
   "main": "index.js",
-  "type": "module",
   "bin": {
     "worcable": "dist/index.js"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "node esbuild.js",
     "dev": "tsx src/index.ts"
   },
   "keywords": [],
@@ -30,6 +29,7 @@
   "devDependencies": {
     "@types/dockerode": "^4.0.1",
     "@types/node": "^25.6.0",
+    "esbuild": "^0.28.0",
     "pkg": "^5.8.1",
     "tsx": "^4.21.0",
     "typescript": "^6.0.2"
