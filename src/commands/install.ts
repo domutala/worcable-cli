@@ -6,24 +6,27 @@ import { askVersion } from "../prompts/version.prompt";
 import { runDaemon } from "../services/daemon.service";
 import { deploy } from "../services/deploy.service";
 import { logger } from "../services/logger.service";
+import { setupSSL } from "../services/nginx/test";
 import { Config } from "../types";
 
 export async function installCommand(options: { resetConfig?: boolean }) {
   logger.title("🚀 Worcable installer").log();
 
-  const version = await askVersion();
-  const userConfig = await askUserInfo({ version });
-  const services = await askServices();
+  await setupSSL();
 
-  let config: Config = {
-    user: userConfig,
-    version,
-    services: { availables: services } as any,
-  };
+  // const version = await askVersion();
+  // const userConfig = await askUserInfo({ version });
+  // const services = await askServices();
 
-  config = await askDatabase(config);
-  config = await askCoreConfig(config);
+  // let config: Config = {
+  //   user: userConfig,
+  //   version,
+  //   services: { availables: services } as any,
+  // };
 
-  deploy(config);
+  // config = await askDatabase(config);
+  // config = await askCoreConfig(config);
+
+  // deploy(config);
   // runDaemon(config);
 }

@@ -36,14 +36,6 @@ export async function runDocker(config: Config) {
       retries: 3,
     };
 
-    // - "traefik.enable=true"
-    //   - "traefik.http.routers.whoami.rule=Host(`whoami.app.worcable.space`)"
-    //   - "traefik.http.routers.whoami.entrypoints=web,websecure"
-    //   - "traefik.http.routers.whoami.tls.certresolver=myresolver"
-    //   - "traefik.http.services.whoami.loadbalancer.server.port=80"
-    //   - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
-    // - "traefik.http.routers.whoami.middlewares=redirect-to-https"
-
     labels.push(
       "traefik.enable=true",
 

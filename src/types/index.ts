@@ -28,3 +28,10 @@ export type Config = {
     database: DatabaseConfig;
   };
 };
+
+export interface SslConfig {
+  domain: string;
+  containerPort: number;
+  serviceName: string;
+  email: string;
+}
