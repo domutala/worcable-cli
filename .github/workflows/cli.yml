@@ -62,8 +62,8 @@ jobs:
           bun build src/index.ts --compile --target=bun-darwin-x64 --outfile worcable-darwin-amd64
           bun build src/index.ts --compile --target=bun-darwin-arm64 --outfile worcable-darwin-arm64
 
-      - name: Rename binary
-        run: mv worcable worcable-linux
+      # - name: Rename binary
+      #   run: mv worcable worcable-linux
 
       - name: Upload release
         uses: softprops/action-gh-release@v2
