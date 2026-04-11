@@ -46,6 +46,7 @@ jobs:
 
       - name: Install dependencies
         run: |
+          pnpm cache delete
           pnpm install --frozen-lockfile
           pnpm build
 
