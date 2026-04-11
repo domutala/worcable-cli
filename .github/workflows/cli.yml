@@ -46,10 +46,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pnpm cache delete
-          rm -rf node_modules pnpm-lock.yaml
-          NODE_OPTIONS=--max-old-space-size=4096 && pnpm install 
-          pnpm build
+          pnpm install 
+          NODE_OPTIONS=--max-old-space-size=4096 && pnpm build
           # edfsdf
 
       - uses: oven-sh/setup-bun@v1
