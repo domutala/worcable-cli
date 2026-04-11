@@ -48,7 +48,7 @@ jobs:
         run: |
           pnpm cache delete
           rm -rf node_modules pnpm-lock.yaml
-          pnpm install --reporter=append-only --frozen-lockfile
+          pnpm install --reporter=append-only 
           pnpm build
           # edfsdf
 
