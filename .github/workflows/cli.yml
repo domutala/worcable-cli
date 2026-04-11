@@ -57,22 +57,22 @@ jobs:
 
       - name: Build CLI
         run: |
-          bun build src/index.ts --compile --target=bun-linux-x64 --outfile worcable-linux-amd64
-          bun build src/index.ts --compile --target=bun-linux-arm64 --outfile worcable-linux-arm64
-          bun build src/index.ts --compile --target=bun-darwin-x64 --outfile worcable-darwin-amd64
-          bun build src/index.ts --compile --target=bun-darwin-arm64 --outfile worcable-darwin-arm64
+          bun build src/index.ts --compile --target=bun-linux-x64 --outfile cli/worcable-linux-amd64
+          bun build src/index.ts --compile --target=bun-linux-arm64 --outfile cli/worcable-linux-arm64
+          bun build src/index.ts --compile --target=bun-darwin-x64 --outfile cli/worcable-darwin-amd64
+          bun build src/index.ts --compile --target=bun-darwin-arm64 --outfile cli/worcable-darwin-arm64
 
-      # - name: Rename binary
-      #   run: mv worcable worcable-linux
+      - name: Make binaries executable
+        run: chmod +x cli/worcable-*
 
       - name: Upload release
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            worcable-linux-amd64
-            worcable-linux-arm64
-            worcable-darwin-amd64
-            worcable-darwin-arm64
+            cli/worcable-linux-amd64
+            cli/worcable-linux-arm64
+            cli/worcable-darwin-amd64
+            cli/worcable-darwin-arm64
           tag_name: ${{ steps.tag-name.outputs.name }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
