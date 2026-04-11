@@ -3,6 +3,7 @@
   "version": "0.28.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "bin": {
     "worcable": "dist/index.js"
   },
