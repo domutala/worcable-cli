@@ -14,7 +14,7 @@ export async function runDocker(config: Config) {
     container_name: containerName,
     restart: "always",
     env_file: ".env",
-    environment: { NODE_ENV: "production" },
+    environment: { NODE_ENV: "production" /** HOST: "0.0.0.0", */ },
     logging: {
       driver: "json-file",
       options: {
@@ -36,33 +36,48 @@ export async function runDocker(config: Config) {
       retries: 3,
     };
 
+    // - "traefik.enable=true"
+    //   - "traefik.http.routers.whoami.rule=Host(`whoami.app.worcable.space`)"
+    //   - "traefik.http.routers.whoami.entrypoints=web,websecure"
+    //   - "traefik.http.routers.whoami.tls.certresolver=myresolver"
+    //   - "traefik.http.services.whoami.loadbalancer.server.port=80"
+    //   - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+    // - "traefik.http.routers.whoami.middlewares=redirect-to-https"
+
     labels.push(
       "traefik.enable=true",
 
-      // 🌐 HTTPS router
       `traefik.http.routers.${containerName}.rule=Host(\`${domain}\`)`,
-      `traefik.http.routers.${containerName}.entrypoints=websecure`,
+      `traefik.http.routers.${containerName}.entrypoints=web,websecure`,
       `traefik.http.routers.${containerName}.tls.certresolver=myresolver`,
-
-      // 🔁 HTTP router (redirect)
-      `traefik.http.routers.${containerName}-http.rule=Host(\`${domain}\`)`,
-      `traefik.http.routers.${containerName}-http.entrypoints=web`,
-      `traefik.http.routers.${containerName}-http.middlewares=redirect-to-https`,
-
-      // 🔐 Middleware redirect
-      `traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https`,
-
-      // 🚀 Service
       `traefik.http.services.${containerName}.loadbalancer.server.port=${port}`,
+      `traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https`,
+      `traefik.http.routers.${containerName}-http.middlewares=redirect-to-https`
 
-      // 🔐 Security headers (important en prod)
-      `traefik.http.middlewares.secure-headers.headers.stsSeconds=31536000`,
-      `traefik.http.middlewares.secure-headers.headers.stsIncludeSubdomains=true`,
-      `traefik.http.middlewares.secure-headers.headers.stsPreload=true`,
-      `traefik.http.middlewares.secure-headers.headers.browserXssFilter=true`,
-      `traefik.http.middlewares.secure-headers.headers.contentTypeNosniff=true`,
+      // // 🌐 HTTPS router
+      // `traefik.http.routers.${containerName}.rule=Host(\`${domain}\`)`,
+      // `traefik.http.routers.${containerName}.entrypoints=websecure`,
+      // `traefik.http.routers.${containerName}.tls.certresolver=myresolver`,
 
-      `traefik.http.routers.${containerName}.middlewares=secure-headers`
+      // // 🔁 HTTP router (redirect)
+      // `traefik.http.routers.${containerName}-http.rule=Host(\`${domain}\`)`,
+      // `traefik.http.routers.${containerName}-http.entrypoints=web`,
+      // `traefik.http.routers.${containerName}-http.middlewares=redirect-to-https`,
+
+      // // 🔐 Middleware redirect
+      // `traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https`,
+
+      // // 🚀 Service
+      // `traefik.http.services.${containerName}.loadbalancer.server.port=${port}`,
+
+      // // 🔐 Security headers (important en prod)
+      // `traefik.http.middlewares.secure-headers.headers.stsSeconds=31536000`,
+      // `traefik.http.middlewares.secure-headers.headers.stsIncludeSubdomains=true`,
+      // `traefik.http.middlewares.secure-headers.headers.stsPreload=true`,
+      // `traefik.http.middlewares.secure-headers.headers.browserXssFilter=true`,
+      // `traefik.http.middlewares.secure-headers.headers.contentTypeNosniff=true`,
+
+      // `traefik.http.routers.${containerName}.middlewares=secure-headers`
     );
   } else {
     // 👉 fallback sans Traefik
