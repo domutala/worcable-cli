@@ -48,7 +48,7 @@ jobs:
         run: |
           pnpm cache delete
           rm -rf node_modules pnpm-lock.yaml
-          pnpm install --reporter=append-only 
+          NODE_OPTIONS=--max-old-space-size=4096 && pnpm install 
           pnpm build
           # edfsdf
 
