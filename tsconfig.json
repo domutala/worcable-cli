@@ -1,7 +1,14 @@
 {
   // Visit https://aka.ms/tsconfig to read more about this file
   "compilerOptions": {
-    "target": "esnext",
+    "types": [
+      "node"
+    ],
+    "moduleResolution": "node",
+    "lib": [
+      "ES2022"
+    ],
+    "target": "ES2022",
     "module": "ESNext",
     // "moduleResolution": "node",
     // "ignoreDeprecations": "6.0",
