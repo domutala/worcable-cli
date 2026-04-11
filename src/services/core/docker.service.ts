@@ -28,12 +28,14 @@ export async function runDocker(config: Config) {
   const labels: string[] = [];
 
   if (config.user.reverseProxy === "traefik") {
+    service.ports = undefined;
+
     labels.push(
       "traefik.enable=true",
       `traefik.http.routers.worcable-${branchName}.rule=Host('${domain}')`,
       `traefik.http.routers.worcable-${branchName}.entrypoints=web,websecure`,
       `traefik.http.routers.worcable-${branchName}.tls.certresolver=myresolver`,
-      `traefik.http.services.worcable-${branchName}.loadbalancer.server.port=${config.services.core.port}`,
+      `traefik.http.services.worcable-${branchName}.loadbalancer.server.port=${80}`,
       `traefik.http.routers.worcable-${branchName}-http.rule=Host('${domain}')`,
       `traefik.http.routers.worcable-${branchName}-http.entrypoints=web`,
       `traefik.http.routers.worcable-${branchName}-http.middlewares=redirect-to-http`,
