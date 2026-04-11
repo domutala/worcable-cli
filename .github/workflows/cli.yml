@@ -28,7 +28,10 @@ jobs:
 
       - name: Set tag name
         id: tag-name
-        run: echo "name=cli" >> $GITHUB_OUTPUT
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "name=v$VERSION" >> $GITHUB_OUTPUT
+
       - name: Create tag
         run: |
           TAG="${{ steps.tag-name.outputs.name }}"
