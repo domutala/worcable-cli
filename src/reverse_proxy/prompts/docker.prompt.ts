@@ -2,15 +2,14 @@ import { input } from "@inquirer/prompts";
 import { ConfigManager } from "../../services/config.service";
 import pc from "picocolors";
 import { logger } from "../../services/logger.service";
-import { Config } from "../types";
+import { ReverseProxyConfig } from "../types";
 
 export type DockerConfig = {
   network: string;
   nginxContainerName: string;
-  port: number;
 };
 
-export async function askDocker(config: Config) {
+export async function askDocker(config: ReverseProxyConfig) {
   const configManager = new ConfigManager<DockerConfig>(
     ".worcable-reverse-proxy",
     "docker.json"
@@ -28,23 +27,7 @@ export async function askDocker(config: Config) {
       default: dockerConfig?.network ?? "proxy",
     });
 
-    let port = dockerConfig?.port ?? 4800;
-    const usePort = await input({
-      message: `Port`,
-      default: port?.toString(),
-      validate: async (value) => {
-        const num = Number(value);
-        if (isNaN(num) || num < 1 || num > 65535) {
-          return "Port must be a number between 1 and 65535";
-        }
-
-        return true;
-      },
-    });
-
-    port = Number(usePort);
-
-    return { network, port } as DockerConfig;
+    return { network } as DockerConfig;
   }
 
   config.docker = dockerConfig;

@@ -1,20 +1,23 @@
 import { input, select } from "@inquirer/prompts";
 import { ConfigManager } from "../../services/config.service";
-import type { Config, DeployMethod } from "../types";
+import type { ReverseProxyConfig } from "../types";
 import * as z from "zod";
 import pc from "picocolors";
 import { logger } from "../../services/logger.service";
+import { DeployMethod } from "../../types";
 
 export interface Options {
   deployMethod: DeployMethod;
   reverseProxy: "none" | "traefik" | "nginx";
-
+  port: number;
   configDir: string;
   configPath: string;
   adminEmail: string;
 }
 
-export async function askOptions(config: Config): Promise<Config> {
+export async function askOptions(
+  config: ReverseProxyConfig
+): Promise<ReverseProxyConfig> {
   const configManager = new ConfigManager<Options>(
     ".worcable-reverse-proxy",
     "options.json"
@@ -67,6 +70,22 @@ export async function askOptions(config: Config): Promise<Config> {
         return true;
       },
     });
+
+    let port = options?.port ?? 4800;
+    const usePort = await input({
+      message: `Port`,
+      default: port?.toString(),
+      validate: async (value) => {
+        const num = Number(value);
+        if (isNaN(num) || num < 1 || num > 65535) {
+          return "Port must be a number between 1 and 65535";
+        }
+
+        return true;
+      },
+    });
+
+    port = Number(usePort);
 
     return {
       deployMethod,

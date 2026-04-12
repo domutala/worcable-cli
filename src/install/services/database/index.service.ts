@@ -1,9 +1,9 @@
 import { join } from "node:path";
-import { Config } from "../../types";
+import { IntallConfig } from "../../types";
 import { runDocker } from "./docker.service";
 import { existsSync, mkdirSync } from "node:fs";
 
-export async function deployDatabase(config: Config) {
+export async function deployDatabase(config: IntallConfig) {
   const baseDir = join(
     config.user.configDir,
     config.user.deployMethod,

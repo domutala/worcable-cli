@@ -1,11 +1,11 @@
 import { input, select } from "@inquirer/prompts";
 import { ConfigManager } from "../../services/config.service";
-import { Config, UserConfig } from "../types";
+import { IntallConfig, UserConfig } from "../types";
 import * as z from "zod";
 import pc from "picocolors";
 import { logger } from "../../services/logger.service";
 
-export async function askUserInfo(config: Config): Promise<Config> {
+export async function askUserInfo(config: IntallConfig): Promise<IntallConfig> {
   const configManager = new ConfigManager<UserConfig>(
     ".worcable",
     "config.json"
@@ -17,7 +17,9 @@ export async function askUserInfo(config: Config): Promise<Config> {
   userConfig = await ask();
 
   configManager.save(userConfig);
-  logger.success(`Config saved at: ${configManager.getPath()}`).log();
+  logger
+    .success(`ReverseProxyConfig saved at: ${configManager.getPath()}`)
+    .log();
 
   async function ask() {
     logger.step("config", `${pc.green("User")}`).log();

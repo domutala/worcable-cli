@@ -1,5 +1,5 @@
 import { input, password } from "@inquirer/prompts";
-import { Config } from "../types";
+import { IntallConfig } from "../types";
 import { logger } from "../../services/logger.service";
 import * as z from "zod";
 import { join } from "node:path";
@@ -28,7 +28,7 @@ function validateWith(schema: z.ZodTypeAny, errorMsg: string) {
   };
 }
 
-export async function askDatabase(config: Config) {
+export async function askDatabase(config: IntallConfig) {
   logger.log(
     [
       ">",

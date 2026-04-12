@@ -1,6 +1,6 @@
 import { join } from "node:path";
 import { execa } from "execa";
-import { Config } from "../../types";
+import { ReverseProxyConfig } from "../../types";
 import { Service } from "docker-compose/dist/compose-spec";
 import { copy, existsSync } from "fs-extra";
 import * as compose from "docker-compose";
@@ -33,11 +33,11 @@ TimeoutStopSec=30
 [Install]
 WantedBy=multi-user.target`;
 
-export async function deployDaemon(config: Config) {
+export async function deployDaemon(config: ReverseProxyConfig) {
   const target = join(config.options.configDir, "api");
   const serviceName = `worcable.reverse.proxy.api.service`;
   const servicePath = `/etc/systemd/system/${serviceName}`;
-  const port = config.docker.port;
+  const port = config.options.port;
 
   await clone(target);
 
@@ -73,10 +73,10 @@ export async function deployDaemon(config: Config) {
   });
 }
 
-export async function deployDocker(config: Config) {
+export async function deployDocker(config: ReverseProxyConfig) {
   const target = join(config.options.configDir, "api");
   const networName = config.docker.network;
-  const port = config.docker.port;
+  const port = config.options.port;
   const constainerName = "worcable-reverse-proxy-api";
 
   const service: Service = {

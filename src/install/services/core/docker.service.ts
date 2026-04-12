@@ -1,8 +1,8 @@
 import * as compose from "docker-compose";
 import type { Service } from "docker-compose/dist/compose-spec";
-import type { Config } from "../../types";
+import type { IntallConfig } from "../../types";
 
-export async function runDocker(config: Config) {
+export async function runDocker(config: IntallConfig) {
   const tag = config.version.replaceAll(".", "").replaceAll("/", "-");
   const containerName = `worcable-core-${tag}`;
   const networName = config.docker.network;

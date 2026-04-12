@@ -1,10 +1,10 @@
 import * as compose from "docker-compose";
 import { Service } from "docker-compose/dist/compose-spec";
-import { Config } from "../../types";
+import { ReverseProxyConfig } from "../../types";
 import { join } from "node:path";
 import { mkdirSync } from "node:fs";
 
-export async function deployNginxDocker(config: Config) {
+export async function deployNginxDocker(config: ReverseProxyConfig) {
   const target = join(config.options.configDir, "nginx");
   const networName = config.docker.network;
   const constainerName = "worcable-reverse-proxy-nginx";

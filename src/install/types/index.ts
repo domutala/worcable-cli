@@ -1,10 +1,7 @@
+import { DeployMethod, ServiceName } from "../../types";
 import type { CoreConfig } from "../prompts/core.prompt";
 import type { DatabaseConfig } from "../prompts/database.prompt";
 import type { DockerConfig } from "../prompts/docker.prompt";
-
-export type ServiceName = "core" | "db" | "mailer" | "cvparser";
-
-export type DeployMethod = "docker" | "native";
 
 export interface UserConfig {
   name: string;
@@ -20,7 +17,7 @@ export interface UserConfig {
   configPath: string;
 }
 
-export type Config = {
+export type IntallConfig = {
   user: UserConfig;
   version: string;
   docker: DockerConfig;

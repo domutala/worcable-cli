@@ -1,6 +1,6 @@
 import { input } from "@inquirer/prompts";
 import { join } from "node:path";
-import { Config } from "../types";
+import { IntallConfig } from "../types";
 import * as z from "zod";
 import { loadEnv, saveEnv, validateEnv } from "../../services/env.service";
 import { isPortAvailable } from "../../utils/is_port_used";
@@ -22,7 +22,9 @@ export interface CoreConfig {
   env: z.infer<typeof envSchema>;
 }
 
-export async function askCoreConfig(config: Config): Promise<Config> {
+export async function askCoreConfig(
+  config: IntallConfig
+): Promise<IntallConfig> {
   logger.log(
     [
       ">",

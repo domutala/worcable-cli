@@ -3,11 +3,11 @@ import { ConfigManager } from "../../services/config.service";
 import * as z from "zod";
 import pc from "picocolors";
 import { logger } from "../../services/logger.service";
-import { Config } from "../types";
+import { IntallConfig } from "../types";
 
 export type DockerConfig = { network: string; nginxContainerName: string };
 
-export async function askDocker(config: Config) {
+export async function askDocker(config: IntallConfig) {
   const configManager = new ConfigManager<DockerConfig>(
     ".worcable",
     "docker.json"

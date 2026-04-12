@@ -6,12 +6,12 @@ import { askUserInfo } from "../install/prompts/user.prompt";
 import { askVersion } from "../install/prompts/version.prompt";
 import { deploy } from "../install/services/deploy.service";
 import { logger } from "../services/logger.service";
-import { Config } from "../install/types";
+import { IntallConfig } from "../install/types";
 
 export async function installCommand(options: { resetConfig?: boolean }) {
   logger.title("🚀 Worcable installer").log();
 
-  let config = { services: {} } as any as Config;
+  let config = { services: {} } as any as IntallConfig;
 
   config.version = await askVersion();
 

@@ -1,10 +1,10 @@
-import { Config } from "../types";
+import { IntallConfig } from "../types";
 import { deployCore } from "./core";
 import { deployDatabase } from "./database";
-import { ensureNetworkExists } from "./docker/ensure_network_exists";
+import { ensureNetworkExists } from "../../services/docker/ensure_network_exists";
 import { logger } from "../../services/logger.service";
 
-export async function deploy(config: Config) {
+export async function deploy(config: IntallConfig) {
   if (config.user.deployMethod === "docker") {
     ensureNetworkExists(config.docker.network);
   }

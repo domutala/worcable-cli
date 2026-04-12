@@ -1,9 +1,7 @@
 import type { DockerConfig } from "../prompts/docker.prompt";
-import { Options } from "../prompts/options.prompt";
+import type { Options } from "../prompts/options.prompt";
 
-export type DeployMethod = "docker" | "native";
-
-export type Config = {
+export type ReverseProxyConfig = {
   options: Options;
   docker: DockerConfig;
 };
