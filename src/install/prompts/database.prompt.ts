@@ -1,11 +1,11 @@
 import { input, password } from "@inquirer/prompts";
 import { IntallConfig } from "../types";
-import { logger } from "../../services/logger.service";
 import * as z from "zod";
 import { join } from "node:path";
 import { existsSync, mkdirSync } from "node:fs";
 import { loadEnv, saveEnv, validateEnv } from "../../services/env.service";
 import { randomBytes } from "node:crypto";
+import { pico } from "../../utils/pico";
 
 const databaseEnvSchema = z.object({
   PORT: z.string().transform(Number).pipe(z.number().positive()).optional(),
@@ -29,13 +29,11 @@ function validateWith(schema: z.ZodTypeAny, errorMsg: string) {
 }
 
 export async function askDatabase(config: IntallConfig) {
-  logger.log(
-    [
-      ">",
-      logger.accent({ color: "bgMagenta", val: "database" }).val,
-      "Configuration",
-    ].join(" ")
-  );
+  pico
+    .clear()
+    .render("green", "⮞")
+    .render("magenta", "Database Configuration")
+    .log();
 
   const baseDir = join(
     config.user.configDir,

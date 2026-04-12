@@ -3,8 +3,7 @@ import type { Service } from "docker-compose/dist/compose-spec";
 import type { IntallConfig } from "../../types";
 
 export async function runDocker(config: IntallConfig) {
-  const tag = config.version.replaceAll(".", "").replaceAll("/", "-");
-  const containerName = `worcable-core-${tag}`;
+  const containerName = config.services.core.containerName;
   const networName = config.docker.network;
   const port = config.services.core.port;
 
@@ -13,7 +12,7 @@ export async function runDocker(config: IntallConfig) {
     container_name: containerName,
     restart: "always",
     env_file: ".env",
-    environment: { NODE_ENV: "production" /** HOST: "0.0.0.0", */ },
+    environment: { NODE_ENV: "production" },
     ports: [`${port}:${port}`],
     logging: {
       driver: "json-file",

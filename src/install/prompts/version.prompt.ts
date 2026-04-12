@@ -8,7 +8,7 @@ interface GitTag {
 const GITHUB_API = "https://api.github.com/repos/domutala/worcable/tags";
 
 export async function askVersion(): Promise<string> {
-  logger.step("version", "").log();
+  // logger.step("version", "").log();
 
   let versions: string[] = [];
   const loader = logger.process("📦 Fetching available versions...");

@@ -1,10 +1,8 @@
-import { input, select } from "@inquirer/prompts";
+import { confirm } from "@inquirer/prompts";
 import { ConfigManager } from "../../services/config.service";
 import { IntallConfig } from "../types";
-import pc from "picocolors";
-import { logger } from "../../services/logger.service";
-import * as z from "zod";
 import { reverseProxyCommand } from "../../commands/reverse_proxy";
+import { pico } from "../../utils/pico";
 
 export type RPConfig = { use: boolean; url: string };
 
@@ -22,37 +20,20 @@ export async function askReverseProxy(
   configManager.save(rpConfig);
 
   async function ask() {
-    logger.step("config", `${pc.green("Reverse proxy")}`).log();
+    pico.clear().render("green", "⮞").render("magenta", "Reverse proxy").log();
 
-    const use = await select({
+    const use = await confirm({
       message: "Use Worcable reverse proxy",
-      choices: [
-        { name: "No", value: false },
-        { name: "Yes", value: true },
-      ],
-      default: rpConfig?.use,
+      default: rpConfig?.use ?? false,
     });
-
     let url = rpConfig?.url;
 
     if (use) {
-      url = await input({
-        message: "Choose your deployment method",
-        validate(value) {
-          const result = z.url().safeParse(value);
-
-          if (!result.success) {
-            return "Please enter a valid url";
-          }
-
-          return true;
-        },
-        default: rpConfig?.url ?? "http://localhost:4800",
+      await reverseProxyCommand({
+        forceDeployMethod: config.user?.deployMethod,
+        forceAdminEmail: config.user?.email,
+        docker: { forceNetwork: config.docker?.network },
       });
-    }
-
-    if (use) {
-      await reverseProxyCommand();
     }
 
     return {

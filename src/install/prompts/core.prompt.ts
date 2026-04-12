@@ -3,10 +3,9 @@ import { join } from "node:path";
 import { IntallConfig } from "../types";
 import * as z from "zod";
 import { loadEnv, saveEnv, validateEnv } from "../../services/env.service";
-import { isPortAvailable } from "../../utils/is_port_used";
 import { randomBytes } from "node:crypto";
-import { logger } from "../../services/logger.service";
 import { existsSync, mkdirSync } from "node:fs";
+import { pico } from "../../utils/pico";
 
 const envSchema = z.object({
   PORT: z.string().transform(Number).pipe(z.number().positive()).optional(),
@@ -19,19 +18,18 @@ export interface CoreConfig {
   baseDir: string;
   appUrl: string;
   port: number;
+  containerName: string;
   env: z.infer<typeof envSchema>;
 }
 
 export async function askCoreConfig(
   config: IntallConfig
 ): Promise<IntallConfig> {
-  logger.log(
-    [
-      ">",
-      logger.accent({ color: "bgMagenta", val: "core" }).val,
-      "Configuration",
-    ].join(" ")
-  );
+  pico
+    .clear()
+    .render("green", "⮞")
+    .render("magenta", "Core Configuration")
+    .log();
 
   const baseDir = join(config.user.configDir, config.user.deployMethod, "core");
   if (!existsSync(baseDir)) mkdirSync(baseDir, { recursive: true });
@@ -123,6 +121,9 @@ export async function askCoreConfig(
     baseDir,
     appUrl,
     port,
+    containerName: `worcable-core-${config.version
+      .replaceAll(".", "")
+      .replaceAll("/", "-")}`,
     env,
   };
 
@@ -132,8 +133,6 @@ export async function askCoreConfig(
     if (config.version === "latest") port = 4730;
     if (config.version === "dev") port = 4731;
     else port = 4732;
-
-    // const isUded = await isPortAvailable(port)
 
     return port;
   }

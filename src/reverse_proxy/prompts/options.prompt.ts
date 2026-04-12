@@ -2,8 +2,6 @@ import { input, select } from "@inquirer/prompts";
 import { ConfigManager } from "../../services/config.service";
 import type { ReverseProxyConfig } from "../types";
 import * as z from "zod";
-import pc from "picocolors";
-import { logger } from "../../services/logger.service";
 import { DeployMethod } from "../../types";
 
 export interface Options {
@@ -28,25 +26,29 @@ export async function askOptions(
   if (options) configManager.save(options);
 
   async function ask() {
-    logger.step("config", `${pc.green("Options")}`).log();
+    let deployMethod = options?.deployMethod;
 
-    const deployMethod = await select({
-      message: "Choose your deployment method",
-      choices: [
-        {
-          name: "Docker",
-          value: "docker",
-          description: "Recommended - Isolated and reproducible",
-        },
-        {
-          name: "Native",
-          description: "Run directly on the host system",
-          value: "native",
-          disabled: "(Comming soon)",
-        },
-      ],
-      default: options?.deployMethod ?? "docker",
-    });
+    if (config.params.forceDeployMethod) {
+      deployMethod = config.params.forceDeployMethod;
+    } else {
+      deployMethod = await select({
+        message: "Choose your deployment method",
+        choices: [
+          {
+            name: "Docker",
+            value: "docker",
+            description: "Recommended - Isolated and reproducible",
+          },
+          {
+            name: "Native",
+            description: "Run directly on the host system",
+            value: "native",
+            disabled: "(Comming soon)",
+          },
+        ],
+        default: options?.deployMethod ?? "docker",
+      });
+    }
 
     const reverseProxy = await select({
       message: "Select Worcable version to install",
@@ -57,19 +59,25 @@ export async function askOptions(
       default: options?.reverseProxy ?? "none",
     });
 
-    const adminEmail = await input({
-      message: "Admin email",
-      default: options?.adminEmail,
-      validate(value) {
-        const result = z.email().safeParse(value);
+    let adminEmail = options?.adminEmail;
 
-        if (!result.success) {
-          return "Please enter a valid email address (e.g., name@company.com)";
-        }
+    if (config.params.forceAdminEmail) {
+      adminEmail = config.params.forceAdminEmail;
+    } else {
+      adminEmail = await input({
+        message: "Admin email",
+        default: options?.adminEmail,
+        validate(value) {
+          const result = z.email().safeParse(value);
 
-        return true;
-      },
-    });
+          if (!result.success) {
+            return "Please enter a valid email address (e.g., name@company.com)";
+          }
+
+          return true;
+        },
+      });
+    }
 
     let port = options?.port ?? 4800;
     const usePort = await input({

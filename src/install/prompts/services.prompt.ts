@@ -1,11 +1,11 @@
 import { checkbox } from "@inquirer/prompts";
-import { logger } from "../../services/logger.service";
 import { ServiceName } from "../../types";
 import { IntallConfig } from "../types";
 
 export async function askServices(config: IntallConfig): Promise<IntallConfig> {
+  // logger.step(`services`, "Select Worcable services to install").val
   const selected = await checkbox({
-    message: logger.step(`services`, "Select Worcable services to install").val,
+    message: "Select Worcable services to install",
     choices: [
       {
         name: "1. Core",

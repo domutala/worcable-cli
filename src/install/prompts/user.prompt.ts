@@ -2,8 +2,6 @@ import { input, select } from "@inquirer/prompts";
 import { ConfigManager } from "../../services/config.service";
 import { IntallConfig, UserConfig } from "../types";
 import * as z from "zod";
-import pc from "picocolors";
-import { logger } from "../../services/logger.service";
 
 export async function askUserInfo(config: IntallConfig): Promise<IntallConfig> {
   const configManager = new ConfigManager<UserConfig>(
@@ -17,12 +15,9 @@ export async function askUserInfo(config: IntallConfig): Promise<IntallConfig> {
   userConfig = await ask();
 
   configManager.save(userConfig);
-  logger
-    .success(`ReverseProxyConfig saved at: ${configManager.getPath()}`)
-    .log();
 
   async function ask() {
-    logger.step("config", `${pc.green("User")}`).log();
+    // logger.step("config", `${pc.green("User")}`).log();
     const name = await input({
       message: "Your name",
       default: userConfig?.name,
@@ -42,14 +37,14 @@ export async function askUserInfo(config: IntallConfig): Promise<IntallConfig> {
       },
     });
 
-    logger.step("config", `${pc.green("Organisation")}`).log();
+    // logger.step("config", `${pc.green("Organisation")}`).log();
 
     const orgName = await input({
       message: "Organization name",
       default: userConfig?.orgName,
     });
 
-    logger.step("config", `${pc.green("Deployment")}`).log();
+    // logger.step("config", `${pc.green("Deployment")}`).log();
 
     const baseUrl = await input({
       message: "Base url (example 'career.your-domain.com')",
@@ -68,7 +63,7 @@ export async function askUserInfo(config: IntallConfig): Promise<IntallConfig> {
     });
 
     const protocole = await select({
-      message: "Select Worcable version to install",
+      message: "Protocol",
       choices: [
         { name: "HTTPS", value: "https" },
         { name: "HTTP", value: "http" },

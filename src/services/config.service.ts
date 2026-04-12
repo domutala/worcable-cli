@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import os from "os";
-import { logger } from "./logger.service";
+import { pico } from "../utils/pico";
 
 export class ConfigManager<T> {
   private readonly configDir: string;
@@ -45,7 +45,11 @@ export class ConfigManager<T> {
     }
 
     fs.writeFileSync(this.configPath, JSON.stringify(config, null, 2));
-    logger.success(`Saved at: ${this.configPath}`).log();
+    pico
+      .clear()
+      .render("green", "✔")
+      .render("dim", `Saved at: ${this.configPath}`)
+      .log();
   }
 
   /**

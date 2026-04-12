@@ -7,6 +7,7 @@
     "worcable": "dist/index.js"
   },
   "scripts": {
+    "text": "tsx src/utils/pico/index.ts",
     "build": "node esbuild.js",
     "dev": "tsx src/index.ts"
   },
@@ -22,6 +23,7 @@
     "dockerode": "^4.0.10",
     "execa": "^7.2.0",
     "fs-extra": "^11.3.4",
+    "ofetch": "^1.5.1",
     "ora": "^9.3.0",
     "picocolors": "^1.1.1",
     "yocto-spinner": "^1.1.0",

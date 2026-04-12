@@ -18,7 +18,7 @@ export async function askDocker(config: IntallConfig) {
   configManager.save(dockerConfig);
 
   async function ask() {
-    logger.step("config", `${pc.green("Docker")}`).log();
+    // logger.step("config", `${pc.green("Docker")}`).log();
 
     const network = await input({
       message: "Docker newtwork",

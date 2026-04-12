@@ -1,3 +1,5 @@
+/** @deprecated */
+
 import pc from "picocolors";
 import yoctoSpinner from "yocto-spinner";
 
