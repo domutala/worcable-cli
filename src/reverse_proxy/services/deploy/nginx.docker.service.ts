@@ -37,12 +37,13 @@ export async function deployNginxDocker(config: Config) {
       "./certbot/www:/var/www/certbot",
       "./certbot/conf:/etc/letsencrypt",
     ],
+    entrypoint: "",
     command: [
-      `sh -c "
-      pip install --no-cache-dir certbot certbot-nginx &&
-      echo 'Certbot ready' &&
-      sleep infinity
-      "`,
+      "sh",
+      "-c",
+      `pip install --no-cache-dir certbot certbot-nginx &&
+        echo "Certbot ready" &&
+        sleep infinity`,
     ],
   };
 
