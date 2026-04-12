@@ -44,7 +44,7 @@ export async function deployDaemon(config: Config) {
     stdio: "inherit",
   });
 
-  await execa("pnpm", ["build"], { cwd: target, stdio: "inherit" });
+  await execa("sudo", ["pnpm", "build"], { cwd: target, stdio: "inherit" });
 
   await copy(
     join(target, "src/nginx/templates"),
