@@ -1,7 +1,10 @@
 import type { CoreConfig } from "../prompts/core.prompt";
-import { DatabaseConfig } from "../prompts/database.prompt";
+import type { DatabaseConfig } from "../prompts/database.prompt";
+import type { DockerConfig } from "../prompts/docker.prompt";
 
 export type ServiceName = "core" | "db" | "mailer" | "cvparser";
+
+export type DeployMethod = "docker" | "native";
 
 export interface UserConfig {
   name: string;
@@ -11,9 +14,7 @@ export interface UserConfig {
   baseUrl: string;
   protocole: string;
 
-  deployMethod: "docker" | "native";
-  dockerNetwork: string;
-  reverseProxy: "none" | "traefik" | "nginx";
+  deployMethod: DeployMethod;
 
   configDir: string;
   configPath: string;
@@ -22,16 +23,10 @@ export interface UserConfig {
 export type Config = {
   user: UserConfig;
   version: string;
+  docker: DockerConfig;
   services: {
     availables: ServiceName[];
     core: CoreConfig;
     database: DatabaseConfig;
   };
 };
-
-export interface SslConfig {
-  domain: string;
-  containerPort: number;
-  serviceName: string;
-  email: string;
-}

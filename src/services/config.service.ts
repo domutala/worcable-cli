@@ -3,15 +3,15 @@ import path from "node:path";
 import os from "os";
 import { UserConfig } from "../types";
 
-export class ConfigManager {
+export class ConfigManager<T = UserConfig> {
   private readonly version: string;
   private readonly configDir: string;
   private readonly configPath: string;
 
-  constructor(options: { version: string }) {
+  constructor(options: { version: string }, file: string = "config.json") {
     this.version = options.version;
     this.configDir = path.join(os.homedir(), ".worcable", this.version);
-    this.configPath = path.join(this.configDir, "config.json");
+    this.configPath = path.join(this.configDir, file);
   }
 
   /**
@@ -25,12 +25,12 @@ export class ConfigManager {
    * Lit la configuration depuis le disque.
    * Retourne null si le fichier n'existe pas ou est corrompu.
    */
-  public read(): UserConfig | null {
+  public read(): T | null {
     if (!this.exists()) return null;
 
     try {
       const raw = fs.readFileSync(this.configPath, "utf-8");
-      return JSON.parse(raw) as UserConfig;
+      return JSON.parse(raw) as T;
     } catch (error) {
       console.error("Erreur lors de la lecture du fichier config:", error);
       return null;
@@ -41,7 +41,7 @@ export class ConfigManager {
    * Sauvegarde la configuration sur le disque.
    * Crée le dossier parent s'il n'existe pas.
    */
-  public save(config: UserConfig): void {
+  public save(config: T): void {
     if (!fs.existsSync(this.configDir)) {
       fs.mkdirSync(this.configDir, { recursive: true });
     }

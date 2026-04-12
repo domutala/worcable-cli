@@ -1,15 +1,15 @@
 import { input, select } from "@inquirer/prompts";
 import { ConfigManager } from "../services/config.service";
-import { UserConfig } from "../types";
+import { Config, UserConfig } from "../types";
 import * as z from "zod";
 import pc from "picocolors";
 import { logger } from "../services/logger.service";
 
-export async function askUserInfo(options: { version: string }) {
-  const configManager = new ConfigManager({ version: options.version });
+export async function askUserInfo(config: Config): Promise<Config> {
+  const configManager = new ConfigManager({ version: config.version });
   let userConfig = configManager.read();
 
-  // if (userConfig) return userConfig;
+  // if (userConfig) return { ...config, user: userConfig };
 
   userConfig = await ask();
 
@@ -89,25 +89,6 @@ export async function askUserInfo(options: { version: string }) {
       default: userConfig?.deployMethod ?? "docker",
     });
 
-    let dockerNetwork = userConfig?.dockerNetwork ?? "proxy";
-
-    if (deployMethod === "docker") {
-      dockerNetwork = await input({
-        message: "Docker newtwork",
-        default: dockerNetwork,
-      });
-    }
-
-    const reverseProxy = await select({
-      message: "Select Worcable version to install",
-      choices: [
-        { name: "None", value: "none" },
-        { name: "traefik", value: "traefik" },
-        { name: "nginx", value: "nginx", disabled: "(Comming soon)" },
-      ],
-      default: userConfig?.reverseProxy ?? "traefik",
-    });
-
     return {
       name,
       email,
@@ -116,13 +97,11 @@ export async function askUserInfo(options: { version: string }) {
       baseUrl,
       protocole,
       deployMethod,
-      dockerNetwork,
-      reverseProxy,
 
       configDir: configManager.getDir(),
       configPath: configManager.getPath(),
     } as UserConfig;
   }
 
-  return userConfig!;
+  return { ...config, user: userConfig };
 }

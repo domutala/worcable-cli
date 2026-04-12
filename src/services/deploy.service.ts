@@ -6,7 +6,7 @@ import { logger } from "./logger.service";
 
 export async function deploy(config: Config) {
   if (config.user.deployMethod === "docker") {
-    ensureNetworkExists(config.user.dockerNetwork);
+    ensureNetworkExists(config.docker.network);
   }
 
   logger.log(

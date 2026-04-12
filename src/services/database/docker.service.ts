@@ -5,7 +5,7 @@ import type { Config } from "../../types";
 export async function runDocker(config: Config) {
   const tag = config.version.replaceAll(".", "").replaceAll("/", "-");
   const branchName = `worcable-database-${tag}`;
-  const networName = config.user.dockerNetwork;
+  const networName = config.docker.network;
 
   const service: Service = {
     image: "mongo:latest",

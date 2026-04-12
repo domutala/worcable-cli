@@ -1,8 +1,8 @@
 import { checkbox } from "@inquirer/prompts";
-import { ServiceName } from "../types";
+import { Config, ServiceName } from "../types";
 import { logger } from "../services/logger.service";
 
-export async function askServices(): Promise<ServiceName[]> {
+export async function askServices(config: Config): Promise<Config> {
   const selected = await checkbox({
     message: logger.step(`services`, "Select Worcable services to install").val,
     choices: [
@@ -33,5 +33,8 @@ export async function askServices(): Promise<ServiceName[]> {
   // Sécurité : on force core au cas où
   if (!selected.includes("core")) selected.push("core");
 
-  return selected as ServiceName[];
+  config.services ??= {} as any;
+  config.services.availables = selected as ServiceName[];
+
+  return config;
 }

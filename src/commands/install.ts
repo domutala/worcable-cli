@@ -1,32 +1,27 @@
 import { askCoreConfig } from "../prompts/core.prompt";
 import { askDatabase } from "../prompts/database.prompt";
+import { askDocker } from "../prompts/docker.prompt";
 import { askServices } from "../prompts/services.prompt";
 import { askUserInfo } from "../prompts/user.prompt";
 import { askVersion } from "../prompts/version.prompt";
 import { runDaemon } from "../services/daemon.service";
 import { deploy } from "../services/deploy.service";
 import { logger } from "../services/logger.service";
-import { setupSSL } from "../services/nginx/test";
 import { Config } from "../types";
 
 export async function installCommand(options: { resetConfig?: boolean }) {
   logger.title("🚀 Worcable installer").log();
 
-  await setupSSL();
+  let config = { services: {} } as any as Config;
 
-  // const version = await askVersion();
-  // const userConfig = await askUserInfo({ version });
-  // const services = await askServices();
+  config.version = await askVersion();
 
-  // let config: Config = {
-  //   user: userConfig,
-  //   version,
-  //   services: { availables: services } as any,
-  // };
+  config = await askUserInfo(config);
+  config = await askDocker(config);
+  config = await askServices(config);
+  config = await askDatabase(config);
+  config = await askCoreConfig(config);
 
-  // config = await askDatabase(config);
-  // config = await askCoreConfig(config);
-
-  // deploy(config);
-  // runDaemon(config);
+  // await deploy(config);
+  // await runDaemon(config);
 }
