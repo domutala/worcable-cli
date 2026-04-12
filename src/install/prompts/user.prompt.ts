@@ -1,12 +1,15 @@
 import { input, select } from "@inquirer/prompts";
-import { ConfigManager } from "../services/config.service";
+import { ConfigManager } from "../../services/config.service";
 import { Config, UserConfig } from "../types";
 import * as z from "zod";
 import pc from "picocolors";
-import { logger } from "../services/logger.service";
+import { logger } from "../../services/logger.service";
 
 export async function askUserInfo(config: Config): Promise<Config> {
-  const configManager = new ConfigManager({ version: config.version });
+  const configManager = new ConfigManager<UserConfig>(
+    ".worcable",
+    "config.json"
+  );
   let userConfig = configManager.read();
 
   // if (userConfig) return { ...config, user: userConfig };

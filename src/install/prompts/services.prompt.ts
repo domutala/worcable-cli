@@ -1,6 +1,6 @@
 import { checkbox } from "@inquirer/prompts";
 import { Config, ServiceName } from "../types";
-import { logger } from "../services/logger.service";
+import { logger } from "../../services/logger.service";
 
 export async function askServices(config: Config): Promise<Config> {
   const selected = await checkbox({

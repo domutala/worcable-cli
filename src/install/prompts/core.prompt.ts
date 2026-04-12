@@ -2,10 +2,10 @@ import { input } from "@inquirer/prompts";
 import { join } from "node:path";
 import { Config } from "../types";
 import * as z from "zod";
-import { loadEnv, saveEnv, validateEnv } from "../services/env.service";
-import { isPortAvailable } from "../utils/is_post_used";
+import { loadEnv, saveEnv, validateEnv } from "../../services/env.service";
+import { isPortAvailable } from "../../utils/is_port_used";
 import { randomBytes } from "node:crypto";
-import { logger } from "../services/logger.service";
+import { logger } from "../../services/logger.service";
 import { existsSync, mkdirSync } from "node:fs";
 
 const envSchema = z.object({

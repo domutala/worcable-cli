@@ -1,15 +1,15 @@
 import { input, select } from "@inquirer/prompts";
-import { ConfigManager } from "../services/config.service";
+import { ConfigManager } from "../../services/config.service";
 import * as z from "zod";
 import pc from "picocolors";
-import { logger } from "../services/logger.service";
+import { logger } from "../../services/logger.service";
 import { Config } from "../types";
 
 export type DockerConfig = { network: string; nginxContainerName: string };
 
 export async function askDocker(config: Config) {
   const configManager = new ConfigManager<DockerConfig>(
-    { version: config.version },
+    ".worcable",
     "docker.json"
   );
   let dockerConfig = configManager.read();

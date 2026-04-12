@@ -1,10 +1,10 @@
 import { input, password } from "@inquirer/prompts";
 import { Config } from "../types";
-import { logger } from "../services/logger.service";
+import { logger } from "../../services/logger.service";
 import * as z from "zod";
 import { join } from "node:path";
 import { existsSync, mkdirSync } from "node:fs";
-import { loadEnv, saveEnv, validateEnv } from "../services/env.service";
+import { loadEnv, saveEnv, validateEnv } from "../../services/env.service";
 import { randomBytes } from "node:crypto";
 
 const databaseEnvSchema = z.object({

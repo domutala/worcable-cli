@@ -2,7 +2,7 @@ import { Config } from "../types";
 import { deployCore } from "./core";
 import { deployDatabase } from "./database";
 import { ensureNetworkExists } from "./docker/ensure_network_exists";
-import { logger } from "./logger.service";
+import { logger } from "../../services/logger.service";
 
 export async function deploy(config: Config) {
   if (config.user.deployMethod === "docker") {

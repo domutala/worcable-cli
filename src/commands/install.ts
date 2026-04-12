@@ -1,13 +1,12 @@
-import { askCoreConfig } from "../prompts/core.prompt";
-import { askDatabase } from "../prompts/database.prompt";
-import { askDocker } from "../prompts/docker.prompt";
-import { askServices } from "../prompts/services.prompt";
-import { askUserInfo } from "../prompts/user.prompt";
-import { askVersion } from "../prompts/version.prompt";
-import { runDaemon } from "../services/daemon.service";
-import { deploy } from "../services/deploy.service";
+import { askCoreConfig } from "../install/prompts/core.prompt";
+import { askDatabase } from "../install/prompts/database.prompt";
+import { askDocker } from "../install/prompts/docker.prompt";
+import { askServices } from "../install/prompts/services.prompt";
+import { askUserInfo } from "../install/prompts/user.prompt";
+import { askVersion } from "../install/prompts/version.prompt";
+import { deploy } from "../install/services/deploy.service";
 import { logger } from "../services/logger.service";
-import { Config } from "../types";
+import { Config } from "../install/types";
 
 export async function installCommand(options: { resetConfig?: boolean }) {
   logger.title("🚀 Worcable installer").log();
@@ -23,5 +22,4 @@ export async function installCommand(options: { resetConfig?: boolean }) {
   config = await askCoreConfig(config);
 
   await deploy(config);
-  await runDaemon(config);
 }

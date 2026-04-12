@@ -1,5 +1,5 @@
 import { select } from "@inquirer/prompts";
-import { logger } from "../services/logger.service";
+import { logger } from "../../services/logger.service";
 
 interface GitTag {
   name: string;

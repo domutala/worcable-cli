@@ -1,16 +1,14 @@
 import fs from "node:fs";
 import path from "node:path";
 import os from "os";
-import { UserConfig } from "../types";
+import { logger } from "./logger.service";
 
-export class ConfigManager<T = UserConfig> {
-  private readonly version: string;
+export class ConfigManager<T> {
   private readonly configDir: string;
   private readonly configPath: string;
 
-  constructor(options: { version: string }, file: string = "config.json") {
-    this.version = options.version;
-    this.configDir = path.join(os.homedir(), ".worcable", this.version);
+  constructor(dir: string, file: string) {
+    this.configDir = path.join(os.homedir(), dir);
     this.configPath = path.join(this.configDir, file);
   }
 
@@ -47,6 +45,7 @@ export class ConfigManager<T = UserConfig> {
     }
 
     fs.writeFileSync(this.configPath, JSON.stringify(config, null, 2));
+    logger.success(`Saved at: ${this.configPath}`).log();
   }
 
   /**
