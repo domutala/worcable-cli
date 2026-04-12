@@ -39,7 +39,7 @@ export async function deployDaemon(config: Config) {
     port.toString()
   );
 
-  await execa("pnpm", ["install", "--frozen-lockfile"], {
+  await execa("sudo", ["pnpm", "install", "--frozen-lockfile"], {
     cwd: target,
     stdio: "inherit",
   });
