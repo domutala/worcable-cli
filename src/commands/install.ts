@@ -22,6 +22,6 @@ export async function installCommand(options: { resetConfig?: boolean }) {
   config = await askDatabase(config);
   config = await askCoreConfig(config);
 
-  // await deploy(config);
-  // await runDaemon(config);
+  await deploy(config);
+  await runDaemon(config);
 }
