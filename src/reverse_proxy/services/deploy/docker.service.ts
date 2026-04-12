@@ -6,6 +6,7 @@ import { join } from "node:path";
 import { existsSync } from "node:fs";
 
 export async function deployDocker(config: Config) {
+  const target = join(config.options.configDir, "api");
   const networName = config.docker.network;
   const port = config.docker.port;
   const constainerName = "worcable-reverse-proxy-api";
@@ -34,15 +35,13 @@ export async function deployDocker(config: Config) {
   service.labels = labels;
   service.networks = [networName];
 
-  const gitTarget = join(config.options.configDir, "api");
-
-  if (existsSync(gitTarget)) {
+  if (existsSync(target)) {
     await execa("git", ["reset", "--hard", "HEAD"], {
       stdio: "inherit",
-      cwd: gitTarget,
+      cwd: target,
     });
 
-    await execa("git", ["pull"], { stdio: "inherit", cwd: gitTarget });
+    await execa("git", ["pull"], { stdio: "inherit", cwd: target });
   } else {
     await execa(
       "git",
@@ -57,7 +56,8 @@ export async function deployDocker(config: Config) {
 
   const r = await compose.upAll({
     log: true,
-    cwd: gitTarget,
+    cwd: target,
+    commandOptions: ["--force-recreate"],
     compose: {
       services: { reverseproxy: service },
       networks: {
