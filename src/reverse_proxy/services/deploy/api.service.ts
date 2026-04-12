@@ -4,6 +4,7 @@ import { Config } from "../../types";
 import { Service } from "docker-compose/dist/compose-spec";
 import { copy, outputFile, existsSync } from "fs-extra";
 import * as compose from "docker-compose";
+import { execSync } from "node:child_process";
 
 const SERVICE_RAW = `[Unit]
 Description=Worcable GitHub Listener Service
@@ -53,8 +54,11 @@ export async function deployDaemon(config: Config) {
   );
 
   //   await outputFile(`/etc/systemd/system/${serviceName}`, service, "utf-8");
-  await execa("sudo", ["echo", service, ">", servicePath], {
-    stdio: "inherit",
+  //   await execa("sudo", ["echo", service, ">", servicePath], {
+  //     stdio: "inherit",
+  //   });
+  execSync(`sudo echo ${service} > ${servicePath}`, {
+    stdio: "ignore",
   });
 
   await execa("sudo", ["systemctl", "daemon-reload"], { stdio: "inherit" });
