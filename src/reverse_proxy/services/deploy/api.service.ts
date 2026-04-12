@@ -68,7 +68,17 @@ export async function deployDaemon(config: ReverseProxyConfig) {
     stdio: "inherit",
   });
 
-  await execa("sudo", ["systemctl", "start", serviceName], {
+  let isRunning = false;
+
+  try {
+    await execa("sudo", ["systemctl", "is-active", "--quiet", serviceName]);
+    isRunning = true;
+  } catch {
+    isRunning = false;
+  }
+
+  const action = isRunning ? "restart" : "start";
+  await execa("sudo", ["systemctl", action, serviceName], {
     stdio: "inherit",
   });
 }
