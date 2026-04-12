@@ -91,6 +91,7 @@ export async function askOptions(
       deployMethod,
       reverseProxy,
       adminEmail,
+      port,
       configDir: configManager.getDir(),
       configPath: configManager.getPath(),
     } as Options;
