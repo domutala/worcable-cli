@@ -28,7 +28,7 @@ export async function deployNginxDocker(config: Config) {
   };
 
   const certbotService: Service = {
-    image: "certbot/certbot:latest",
+    image: "python:3.12-slim", // "certbot/certbot:latest",
     restart: "always",
     container_name: "worcable-reverse-proxy-certbot",
     environment: {},
@@ -36,6 +36,13 @@ export async function deployNginxDocker(config: Config) {
     volumes: [
       "./certbot/www:/var/www/certbot",
       "./certbot/conf:/etc/letsencrypt",
+    ],
+    command: [
+      `sh -c "
+      pip install --no-cache-dir certbot certbot-nginx &&
+      echo 'Certbot ready' &&
+      sleep infinity
+      "`,
     ],
   };
 
