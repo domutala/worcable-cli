@@ -57,8 +57,11 @@ export async function deployDaemon(config: Config) {
   //   await execa("sudo", ["echo", service, ">", servicePath], {
   //     stdio: "inherit",
   //   });
-  execSync(`sudo echo ${service} > ${servicePath}`, {
-    stdio: "ignore",
+  //   execSync(`sudo echo ${service} > ${servicePath}`, {
+  //     stdio: "ignore",
+  //   });
+  execSync(`echo "${service}" | sudo tee ${servicePath} > /dev/null`, {
+    stdio: "inherit",
   });
 
   await execa("sudo", ["systemctl", "daemon-reload"], { stdio: "inherit" });
