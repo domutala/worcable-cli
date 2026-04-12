@@ -4,8 +4,8 @@ import { deploy } from "../reverse_proxy/services/deploy/index.service";
 import { logger } from "../services/logger.service";
 import { ReverseProxyConfig } from "../reverse_proxy/types";
 
-export async function reverseProxyCommand(options: { resetConfig?: boolean }) {
-  logger.title("🚀 Worcable installer").log();
+export async function reverseProxyCommand() {
+  logger.title("🚀 Worcable reverse proxy").log();
 
   let config = {} as any as ReverseProxyConfig;
 

@@ -8,7 +8,6 @@ export type DockerConfig = {
   network: string;
   nginxContainerName: string;
 };
-
 export async function askDocker(config: ReverseProxyConfig) {
   const configManager = new ConfigManager<DockerConfig>(
     ".worcable-reverse-proxy",

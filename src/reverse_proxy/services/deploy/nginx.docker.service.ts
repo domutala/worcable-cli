@@ -2,7 +2,7 @@ import * as compose from "docker-compose";
 import { Service } from "docker-compose/dist/compose-spec";
 import { ReverseProxyConfig } from "../../types";
 import { join } from "node:path";
-import { mkdirSync } from "node:fs";
+import { mkdirSync, writeFileSync } from "node:fs";
 
 export async function deployNginxDocker(config: ReverseProxyConfig) {
   const target = join(config.options.configDir, "nginx");
@@ -49,6 +49,8 @@ export async function deployNginxDocker(config: ReverseProxyConfig) {
       },
     },
   });
+
+  writeFileSync(r.out, join(target, "docker-compose.yaml"));
 
   return r;
 }
