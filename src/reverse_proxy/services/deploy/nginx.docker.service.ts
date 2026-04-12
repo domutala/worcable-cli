@@ -1,23 +1,17 @@
 import * as compose from "docker-compose";
 import { Service } from "docker-compose/dist/compose-spec";
 import { Config } from "../../types";
-import { execa } from "execa";
 import { join } from "node:path";
+import { mkdirSync } from "node:fs";
 
 export async function deployNginxDocker(config: Config) {
   const target = join(config.options.configDir, "nginx");
   const networName = config.docker.network;
   const constainerName = "worcable-reverse-proxy-nginx";
 
-  await execa("mkdir", ["-p", "./conf.d"], { stdio: "inherit", cwd: target });
-  await execa("mkdir", ["-p", "./certbot/www"], {
-    stdio: "inherit",
-    cwd: target,
-  });
-  await execa("mkdir", ["-p", "./certbot/conf"], {
-    stdio: "inherit",
-    cwd: target,
-  });
+  mkdirSync(join(target, "conf.d"), { recursive: true });
+  mkdirSync(join(target, "certbot/www"), { recursive: true });
+  mkdirSync(join(target, "certbot/conf"), { recursive: true });
 
   const nginxService: Service = {
     image: "nginx:latest",
