@@ -15,14 +15,20 @@ Type=simple
 User=$USER_NAME
 WorkingDirectory=$PROJECT_DIR
 ExecStart=/usr/bin/node dist/index.cjs
+
 Restart=always
 RestartSec=5
+
 Environment=NODE_ENV=production
 Environment=PORT=$PORT
+Environment=PATH=/usr/bin:/usr/local/bin
 
 # Logs
 StandardOutput=journal
 StandardError=journal
+
+KillSignal=SIGINT
+TimeoutStopSec=30
 
 [Install]
 WantedBy=multi-user.target
