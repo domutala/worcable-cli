@@ -57,7 +57,7 @@ export async function deployDocker(config: Config) {
   const r = await compose.upAll({
     log: true,
     cwd: target,
-    commandOptions: ["--force-recreate"],
+    commandOptions: ["--build", "--force-recreate"],
     compose: {
       services: { reverseproxy: service },
       networks: {
