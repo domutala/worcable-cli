@@ -2,7 +2,7 @@ import { join } from "node:path";
 import { execa } from "execa";
 import { Config } from "../../types";
 import { Service } from "docker-compose/dist/compose-spec";
-import { copy, outputFile, existsSync } from "fs-extra";
+import { copy, existsSync } from "fs-extra";
 import * as compose from "docker-compose";
 import { execSync } from "node:child_process";
 
@@ -14,7 +14,7 @@ After=network.target
 Type=simple
 User=$USER_NAME
 WorkingDirectory=$PROJECT_DIR
-ExecStart=/usr/bin/node dist/index.cjs
+ExecStart=$WHICH_NODE dist/index.cjs
 
 Restart=always
 RestartSec=5
@@ -31,8 +31,7 @@ KillSignal=SIGINT
 TimeoutStopSec=30
 
 [Install]
-WantedBy=multi-user.target
-`;
+WantedBy=multi-user.target`;
 
 export async function deployDaemon(config: Config) {
   const target = join(config.options.configDir, "api");
@@ -42,10 +41,10 @@ export async function deployDaemon(config: Config) {
 
   await clone(target);
 
-  const service = SERVICE_RAW.replaceAll("$PROJECT_DIR", target).replaceAll(
-    "$PORT",
-    port.toString()
-  );
+  const whichNode = await execa("which", ["node"]);
+  const service = SERVICE_RAW.replaceAll("$PROJECT_DIR", target)
+    .replaceAll("$PORT", port.toString())
+    .replaceAll("$WHICH_NODE", whichNode.stdout);
 
   await execa("pnpm", ["install", "--frozen-lockfile"], {
     cwd: target,
@@ -59,13 +58,6 @@ export async function deployDaemon(config: Config) {
     join(target, "dist/templates")
   );
 
-  //   await outputFile(`/etc/systemd/system/${serviceName}`, service, "utf-8");
-  //   await execa("sudo", ["echo", service, ">", servicePath], {
-  //     stdio: "inherit",
-  //   });
-  //   execSync(`sudo echo ${service} > ${servicePath}`, {
-  //     stdio: "ignore",
-  //   });
   execSync(`echo "${service}" | sudo tee ${servicePath} > /dev/null`, {
     stdio: "inherit",
   });
