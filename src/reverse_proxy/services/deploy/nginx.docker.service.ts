@@ -50,7 +50,5 @@ export async function deployNginxDocker(config: ReverseProxyConfig) {
     },
   });
 
-  writeFileSync(r.out, join(target, "docker-compose.yaml"));
-
   return r;
 }
