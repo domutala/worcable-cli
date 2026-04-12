@@ -29,6 +29,7 @@ export async function deployDocker(config: Config) {
         "max-file": "3",
       },
     },
+    volumes: ["/var/run/docker.sock:/var/run/docker.sock"],
   };
 
   const labels: string[] = [];
