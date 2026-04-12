@@ -1,8 +1,8 @@
 import { join } from "node:path";
 import { execa } from "execa";
-import { writeFileSync, existsSync } from "node:fs";
 import { Config } from "../../types";
 import { Service } from "docker-compose/dist/compose-spec";
+import { copy, outputFile, existsSync } from "fs-extra";
 import * as compose from "docker-compose";
 
 const SERVICE_RAW = `[Unit]
@@ -46,18 +46,12 @@ export async function deployDaemon(config: Config) {
 
   await execa("pnpm", ["build"], { cwd: target, stdio: "inherit" });
 
-  await execa("rsync", [
-    "-a",
+  await copy(
     join(target, "src/nginx/templates"),
-    join(target, "dist/templates"),
-  ]);
+    join(target, "dist/templates")
+  );
 
-  const tmpPath = join("/tmp", serviceName);
-  writeFileSync(tmpPath, service, "utf-8");
-
-  await execa("sudo", ["mv", tmpPath, `/etc/systemd/system/${serviceName}`], {
-    stdio: "inherit",
-  });
+  await outputFile(`/etc/systemd/system/${serviceName}`, service, "utf-8");
 
   await execa("sudo", ["systemctl", "daemon-reload"], { stdio: "inherit" });
 
