@@ -30,6 +30,7 @@ WantedBy=multi-user.target
 export async function deployDaemon(config: Config) {
   const target = join(config.options.configDir, "api");
   const serviceName = `worcable.reverse.proxy.api.service`;
+  const servicePath = `/etc/systemd/system/${serviceName}`;
   const port = config.docker.port;
 
   await clone(target);
@@ -39,19 +40,22 @@ export async function deployDaemon(config: Config) {
     port.toString()
   );
 
-  await execa("sudo", ["pnpm", "install", "--frozen-lockfile"], {
+  await execa("pnpm", ["install", "--frozen-lockfile"], {
     cwd: target,
     stdio: "inherit",
   });
 
-  await execa("sudo", ["pnpm", "build"], { cwd: target, stdio: "inherit" });
+  await execa("pnpm", ["build"], { cwd: target, stdio: "inherit" });
 
   await copy(
     join(target, "src/nginx/templates"),
     join(target, "dist/templates")
   );
 
-  await outputFile(`/etc/systemd/system/${serviceName}`, service, "utf-8");
+  //   await outputFile(`/etc/systemd/system/${serviceName}`, service, "utf-8");
+  await execa("sudo", ["echo", service, ">", servicePath], {
+    stdio: "inherit",
+  });
 
   await execa("sudo", ["systemctl", "daemon-reload"], { stdio: "inherit" });
 
