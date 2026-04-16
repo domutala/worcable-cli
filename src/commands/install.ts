@@ -17,7 +17,7 @@ export async function installCommand(options: { resetConfig?: boolean }) {
   config = await askServices(config);
   config = await askDatabase(config);
   config = await askCoreConfig(config);
-  config = await askReverseProxy(config);
+  // config = await askReverseProxy(config);
 
   await deploy(config);
 }

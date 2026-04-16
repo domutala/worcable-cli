@@ -7,7 +7,7 @@ import { pico } from './utils/pico';
 const cli = cac("worcable");
 
 cli
-  .command("install", "Install Worcable on the system")
+  .command("deploy", "Install Worcable on the system")
   .alias("i")
   .action(installCommand);
 
